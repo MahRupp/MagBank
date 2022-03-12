@@ -2,7 +2,7 @@ import React from 'react';
 import { Card , Button, Image, Row, Col } from 'react-bootstrap';
 import logo from '../Assets/logo__magic-pay--mobile.png' ;
 import logoDesktop from '../Assets/logo__magic-pay.png';
-import './Hero.scss'
+import './Hero.scss';
 
 const Hero = () => (
     <Card className='text-center text-light hero'>

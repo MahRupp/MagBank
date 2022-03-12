@@ -1,0 +1,23 @@
+.institutional {
+  background-image: url("../Assets/institutional.jpg");
+  background-size: cover;
+  background-position: center top;
+
+  &-title {
+    font-size: 2.2rem;
+    font-weight: 300;
+    line-height: 1.2;
+
+    @media screen and (min-width: 902px) {
+      font-size: 3.5rem;
+    }
+  }
+}
+
+.institutional-text {
+  font-size: 1.2rem;
+}
+
+.institutional-button {
+  font-size: 1.1rem;
+}
