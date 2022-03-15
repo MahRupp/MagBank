@@ -8,7 +8,7 @@ import { faGlobe,
   faShield } from "@fortawesome/free-solid-svg-icons";
 
 
-const Institutional = () => (
+const Institutional = ({onClick}) => (
   <section className='institutional text-light py-5'>
     <Container>
       <Row>
@@ -66,7 +66,7 @@ const Institutional = () => (
           </Row>           
            
          
-          <Button variant="outline-light" className='institutional-button px-3 py-3 mb-5 mt-4'>Abra já a sua conta</Button>
+          <Button variant="outline-light" className='institutional-button px-3 py-3 mb-5 mt-4' onClick={onClick}>Abra já a sua conta</Button>
         </Col>
       </Row>
     </Container>      
