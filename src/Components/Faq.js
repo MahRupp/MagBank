@@ -34,7 +34,7 @@ const Faq = () => {
                   </Col>
                 ))}
               </Row>
-              <Row className='text-center mt-5'>
+              <Row className='ms-5 ps-5 mt-5'>
                 <p className='lead'>{options[index].text}</p>
               </Row>
             </Col>
