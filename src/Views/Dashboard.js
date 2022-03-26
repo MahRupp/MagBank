@@ -1,25 +1,48 @@
-import React from 'react';
-import { Container, Row, Col, Button, Tabs, Tab, Table } from 'react-bootstrap';
+import React, { useState } from 'react';
+import { Container, Row, Col, Button } from 'react-bootstrap';
 import { Routes, Route, Link } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faCircle } from '@fortawesome/free-solid-svg-icons';
 
+import AccountBalance from '../Components/AccountBalance';
+import AccountPayments from '../Components/AccountPayments';
+import AccountHistory from '../Components/AccountHistory';
+
 import './Dashboard.scss';
 
-const Dashboard = () => {
-  const lastData = [
-    {date: '22/07', description:'SAQUE 24H 12345', value: '300,00'},
-    {date: '21/07', description:'SUPERMERCADO 12345', value: '275,00'},
-    {date: '21/07', description:'ESTACIONAMENTO 12345', value: '12,00'},
-    {date: '21/07', description:'PAGAMENTO ALUGUEL 121313', value: '1.500,00'}
+const Dashboard = ( { className=false } ) => {
+  const [ activeLink, setActiveLink ] = useState(0);
+
+  const links = [
+    { text: 'Minha Conta', path: '/dashboard', exact:true },
+    { text: 'Pagamentos', path: 'payments'},
+    { text: 'Extrato', path: 'history'},
   ];
 
-  const futureData = [
-    {date: '07/08', description:'PASSAGEM AEREA', value: '3.000,00'},
-    {date: '07/08', description:'AMSTERDAM HOTEL', value: '2.500,00'},
-    {date: '08/08', description:'FARMACIA', value: '12,00'},
-    {date: '08/08', description:'ACADEMIA', value: '300,00'}
-  ];
+  const data = {
+    latestBalance: [
+      {date: '22/07', description:'SAQUE 24H 12345', value: '300,00'},
+      {date: '21/07', description:'SUPERMERCADO 12345', value: '275,00'},
+      {date: '21/07', description:'ESTACIONAMENTO 12345', value: '12,00'},
+      {date: '21/07', description:'PAGAMENTO ALUGUEL 121313', value: '1.500,00'}
+    ],
+    futureBalance: [
+      {date: '07/08', description:'PASSAGEM AEREA', value: '3.000,00'},
+      {date: '07/08', description:'AMSTERDAM HOTEL', value: '2.500,00'},
+      {date: '08/08', description:'FARMACIA', value: '12,00'},
+      {date: '08/08', description:'ACADEMIA', value: '300,00'}
+    ],
+    history: [
+      {date: '17/07', description:'SAQUE 24H 325652', value: '-200,00', balance: ''},
+      {date: '17/07', description:'SALDO DO DIA', value: '', balance: '2.780,00'},
+      {date: '19/07', description:'ESTACIONAMENTO 325652', value: '-12,00', balance: ''},
+      {date: '19/07', description:'COMPRA INTERNET', value: '-450,00', balance: ''},
+      {date: '19/07', description:'SALDO DO DIA', value: '', balance: '2.318,00'},
+      {date: '21/07', description:'SAQUE 24H 325652', value: '-200,00', balance: ''},
+      {date: '21/07', description:'DEPÓSITO', value: '1.000,00', balance: ''},
+      {date: '21/07', description:'SALDO DO DIA', value: '', balance: '3.118,00'},
+    ]
+  };
 
   return (
     <Container className='dashboard py-5'>
@@ -38,75 +61,29 @@ const Dashboard = () => {
               <p className="text-muted">Ag: 1313 C/C 1313-7</p>
             </Col>
           </Row>
-          <Row>
-              <Button className='dashboard__button  text-start' variant='link' size='lg' block>Minha conta</Button>
-          </Row>
-          <Row>
-            <Button className='dashboard__button text-start' variant='link'size='lg' block>Pagamentos</Button>
-          </Row>
-          <Row>
-            <Button className='dashboard__button text-start' variant='link' size='lg' block>Extrato</Button>
-          </Row>
-        </Col>
-        <Col xs={12} lg={3} className='mt-lg-5 ms-4 pt-lg-4'>
-            <h2 className='my-5'>Conta corrente</h2>
-            <h6> 
-              <small><strong> Saldo em conta corrente</strong> </small> 
-            </h6>
-            <h4 className='text-success mb-4'>
-              <small>R$ </small>3.500<small>,00</small>
-            </h4>
-            <h6>
-              <small><strong>Cheque especial</strong></small>
-              </h6>
-            <p className='mb-0'>Limite disponível</p>
-            <p className='mb-4'>R$ 5.000,00</p>
-            <Button variant='secondary'>Ver extrato</Button>
-        </Col>
-        <Col xs={12} lg={5} className='mt-lg-5 pt-5'>
-          <Tabs className='mt-lg-5 pt-lg-5' variant="tabs" >
-            <Tab eventKey="latestData" title= 'Últimos lançamentos'defaultActiveKey="latest">
-              <Table striped borderless>
-                <thead>
-                    <tr>
-                    <th>Data</th>
-                    <th>Descrição</th>
-                    <th>Valor (R$)</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {lastData.map(({ date, description, value }) => (
-                    <tr>
-                      <td>{date}</td>
-                      <td>{description}</td>
-                      <td>{value}</td>                      
-                    </tr>
-                  ))}   
-                </tbody>    
-              </Table>
-            </Tab>      
-            <Tab eventKey="future" title='Lançamentos futuros' >
-              <Table striped borderless>
-                <thead>
-                    <tr>
-                    <th>Data</th>
-                    <th>Descrição</th>
-                    <th>Valor (R$)</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {futureData.map(({ date, description, value }) => (
-                    <tr>
-                      <td>{date}</td>
-                      <td>{description}</td>
-                      <td>{value}</td>                      
-                    </tr>
-                  ))}   
-                </tbody>    
-              </Table>
-            </Tab>
-          </Tabs>    
-        </Col>      
+          {links.map(( {text, path }, key) => (
+            <Row>
+              <Link className='dashboard__link' to={path} key={key}>
+                <Button 
+                className= {`dashboard__button text-start 
+                text-left ${key === activeLink ? 'dashboard__button--active' : ''}`} 
+                variant='link' 
+                size='lg' 
+                block="true"
+                onClick={() => setActiveLink(key)}
+                >
+                  {text}
+                </Button>
+              </Link> 
+            </Row> 
+          ))}
+                 
+        </Col>  
+        <Routes>
+          <Route path="history" element={<AccountHistory data={data} />} /> 
+          <Route path="payments" element={<AccountPayments />} />           
+          <Route path="/" element= {<AccountBalance data={data}/>} />                    
+        </Routes>          
       </Row>
     </Container>    
   );
